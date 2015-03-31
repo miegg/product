@@ -1,0 +1,4 @@
+#!/bin/bash
+for n in {001..537}; do
+    cp NA.png na-$n.png
+done

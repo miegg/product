@@ -1,0 +1,41 @@
+# file duplicator in linux based on
+
+http://stackoverflow.com/questions/12757318/linux-command-copy-a-file-one-hundred-times
+
+~~~~~~
+
+Using bash brace expansion
+
+for n in {001..100}; do
+    cp file.jpg file-$n.jpg
+done
+
+~~~~~~
+
+
+# file renamer in linux based on
+
+http://askubuntu.com/questions/438573/how-to-batch-rename-files-images-based-on-csv-file
+
+~~~~~~
+
+This should work for you:
+
+sed 's/"//g' files.csv | while IFS=, read orig new; do mv "$orig" "$new"; done 
+
+Explanation:
+
+    sed 's/"//g' files.csv : remove the quotes
+    IFS=, : split the input on ,
+    while read orig new; do ... done : This will read each input line, split it on the value of $IFS (here a comma) and save the 1st field as $orig and the rest as $new.
+    mv "$orig" "$new" : this will rename the files as requested.
+
+If your file only contains file names (like orig.jpg) and no paths (not /home/take2/orig.jpg or similar), the command above will only affect files in your current directory. So, you need to open a terminal, cd to the target directory and run it there.
+
+Test first:
+
+To test this, you can do a dry run first by printing the commands that will be run without actually executing them:
+
+sed 's/"//g' files.csv | while IFS=, read orig new; do echo mv "$orig" "$new"; done 
+
+~~~~~~
